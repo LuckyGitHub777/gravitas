@@ -2,6 +2,8 @@
 
 **Protocol 1.0 · A method for pages that hold attention, earn trust, and move people to act.**
 
+> **Public reference.** Use only public-safe material with hosted tools or external assistants. Sensitive work belongs in an authorized private or local environment.
+
 Gravitas is the pull a page exerts on a serious reader. It holds attention because the page keeps answering the question in the reader's mind, and it moves people to act because every claim has earned its place. This protocol is the complete method. Any person or AI assistant can run it on any page, draft, or brief.
 
 > **To use it:** "Feed this through the Gravitas Engine: [this link]", followed by a page URL, pasted text, HTML, a draft, or a brief. Whoever runs it follows the steps under **Running the engine** and returns the **Gravitas Report**.

@@ -2,20 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-iDFjQASy7OMIIIcVlqLFfAzKjyvaYrqiwUGjcWgjV6M='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Feed any page through the Gravitas Engine: a 10-stage journey and 9-point profile for pages that hold attention, earn trust, and move people to act.">
+<meta name="description" content="Feed a page through Gravitas: its journey, a nine-dimension profile, the weakest link, and the one change that would lift it most. Public-safe information only.">
 <meta property="og:title" content="Gravitas Engine">
-<meta property="og:description" content="Feed any page through the Gravitas Engine: a 10-stage journey and 9-point profile for pages that hold attention, earn trust, and move people to act.">
+<meta property="og:description" content="Feed a page through Gravitas: its journey, a nine-dimension profile, the weakest link, and the one change that would lift it most. Public-safe information only.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://luckygithub777.github.io/gravitas/">
 <link rel="canonical" href="https://luckygithub777.github.io/gravitas/">
 <link rel="alternate" type="text/markdown" href="gravitas.md" title="Gravitas Engine protocol">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1115'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23d6ba7b' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23d6ba7b'/%3E%3C/svg%3E">
 <title>Gravitas Engine</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
 <style>
 /* Layout: an assay bench. Specimen on the left, report on the right; stacks on phones. */
 :root {
@@ -32,9 +30,9 @@
   --warn: #8f4700;
   --bad: #a3262a;
   --focus: #1d6a57;
-  --display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -162,20 +160,68 @@ footer p { margin: 0; max-width: 75ch; }
 @media (prefers-reduced-motion: no-preference) {
   .rail .dot, .dim .meter span { transition: background-color .25s ease, border-color .25s ease; }
 }
+
+/* Hero, steps, pillars, fit, and progressive disclosure */
+.privacy { align-items: flex-start; }
+.privacy::before { margin-top: .5em; }
+.hero { padding-block: 40px 30px; display: grid; gap: 14px; }
+.brand { margin: 0; display: flex; align-items: center; gap: 10px; font: 600 13px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.brand-mark { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--accent); display: grid; place-items: center; font: 500 14px/1 var(--display); letter-spacing: 0; }
+.hero h1 { font: 500 clamp(34px, 5.4vw, 58px)/1.04 var(--display); letter-spacing: -.015em; margin: 0; max-width: 18ch; text-wrap: balance; }
+.hero .lede { font-size: clamp(16px, 1.6vw, 18px); max-width: 60ch; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+.cta-primary { background: var(--accent-fill); color: var(--accent-ink); font-weight: 600; text-decoration: none; padding: 13px 20px; border-radius: 8px; font-size: 16px; }
+.cta-primary:hover { filter: brightness(1.05); }
+.cta-secondary { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; padding: 13px 6px; font-size: 15px; }
+.cta-primary:focus-visible, .cta-secondary:focus-visible, summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.section-title { font: 500 clamp(22px, 2.6vw, 30px)/1.2 var(--display); margin: 0 0 16px; }
+.steps { padding-block: 34px 6px; }
+.step-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; counter-reset: step; }
+.step-list li { counter-increment: step; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; }
+.step-list b { font: 600 15px/1.2 var(--body); }
+.step-list b::before { content: counter(step) " · "; font: 500 12px/1 var(--mono); color: var(--accent); }
+.step-list span { color: var(--muted); font-size: 14px; }
+main.bench-grid { padding-top: 30px; }
+main.bench-grid:focus { outline: none; }
+.lead-move { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 12px; }
+.lead-move p { margin: 0; }
+.lead-move #leadMove { font-size: 15.5px; max-width: 70ch; }
+details.panel > summary { cursor: pointer; list-style: none; font: 500 11.5px/1.2 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
+details.panel > summary::-webkit-details-marker { display: none; }
+details.panel > summary::after { content: "+"; font-size: 16px; color: var(--accent); }
+details.panel[open] > summary::after { content: "−"; }
+details.panel[open] > summary { margin-bottom: 12px; }
+.pillars, .fit { padding-block: 44px 8px; }
+.pillar-grid, .fit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.pillar-grid article, .fit-grid > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+.pillar-grid h3, .fit-grid h3 { font: 500 19px/1.25 var(--display); margin: 0 0 6px; }
+.pillar-grid p, .fit-grid p { margin: 0; color: var(--muted); }
+.doctrine { font: 500 clamp(17px, 1.8vw, 20px)/1.4 var(--display); margin: 18px 0 0; color: var(--accent); }
+.method-part { border-top: 1px solid var(--line); }
+.method-part > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.method-part > summary::-webkit-details-marker { display: none; }
+.method-part > summary::after { content: "+"; font-size: 20px; color: var(--accent); flex: none; }
+.method-part[open] > summary::after { content: "−"; }
+.method-part > summary h2 { margin: 18px 0; }
+.closing { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin: 26px 0 0; }
+.closing span { color: var(--muted); }
+.footer-links { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
+.footer-links a { color: var(--accent); text-underline-offset: 3px; }
+@media (max-width: 920px) { .step-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .step-list, .pillar-grid, .fit-grid { grid-template-columns: minmax(0, 1fr); } .hero { padding-block: 26px 22px; } .cta-primary { flex: 1 1 100%; text-align: center; } }
 </style>
 <style>
-.agents { padding-block: 22px 4px; }
+.agents { padding-block: 44px 4px; }
 .agents h2, .method h2 { font: 500 clamp(22px, 2.6vw, 28px)/1.2 var(--display); margin: 0 0 10px; }
 .agents p { max-width: 78ch; margin: 0 0 10px; }
 .agents code { font: 500 13px/1.5 var(--mono); background: var(--surface-2); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
 .agents .note { font-size: 13.5px; color: var(--muted); }
-.method { border-top: 1px solid var(--line); padding-block: 40px 48px; max-width: 900px; }
-.method h1 { font: 500 clamp(30px, 4vw, 42px)/1.1 var(--display); margin: 0 0 12px; }
-.method h2 { margin-top: 44px; padding-top: 4px; }
+.method { border-top: 1px solid var(--line); margin-top: 36px; padding-block: 40px 48px; }
+.method > * { max-width: 900px; }
+.method .method-title { font: 500 clamp(30px, 4vw, 42px)/1.1 var(--display); margin: 0 0 12px; }
 .method h3 { font: 500 20px/1.3 var(--display); margin: 28px 0 8px; }
 .method p, .method li { max-width: 72ch; }
 .method li { margin-bottom: 6px; }
-.method hr { border: 0; border-top: 1px solid var(--line); margin: 36px 0; }
 .method blockquote { margin: 18px 0; padding: 12px 16px; border-left: 3px solid var(--accent-fill); background: var(--surface); border-radius: 0 8px 8px 0; }
 .method blockquote p { margin: 0; }
 .method code { font: 400 13px/1.5 var(--mono); }
@@ -190,23 +236,35 @@ footer p { margin: 0; max-width: 75ch; }
 </head>
 <body>
 <header class="top">
-  <div class="wrap">
-    <div class="mark"><h1>Gravitas Engine</h1><span class="scale">10-stage journey · 9-point profile</span></div>
-    <p class="lede">Paste a page and see whether it earns trust: which parts of a credible journey it covers, where the language outruns the evidence, and the one change that would lift it most.</p>
-    <p class="links"><a href="#method">Read the method</a><span aria-hidden="true">·</span><a href="#use-with-ai">Use it with any AI</a></p>
-    <p class="privacy">Runs in your browser. Nothing you paste leaves this page unless you copy it out or draft a rewrite.</p>
+  <div class="wrap hero">
+    <p class="brand"><span class="brand-mark" aria-hidden="true">G</span>Gravitas Engine</p>
+    <h1>See whether your page earns trust.</h1>
+    <p class="lede">Feed a page through Gravitas: paste its text or HTML. You get its journey from first sight to action, a nine-dimension profile, the weakest link, and the one change that would lift it most.</p>
+    <div class="cta-row">
+      <a class="cta-primary" href="#feed">Feed Through Gravitas</a>
+      <a class="cta-secondary" href="#method">Explore the Method</a>
+    </div>
+    <p class="privacy"><span><strong>Public-safe information only.</strong> Do not enter confidential, proprietary, controlled, regulated, credential, personal, legal-sensitive, or unpublished strategic information. Use the private/local Gravitas Engine for sensitive work.</span></p>
+    <p class="privacy">The check runs in your browser. Nothing you paste is stored or sent anywhere; copying a prompt or report puts text on your clipboard for you to paste where you choose.</p>
+
   </div>
 </header>
-<section class="wrap agents" id="use-with-ai" aria-labelledby="ai-h">
-  <h2 id="ai-h">Use it with any AI</h2>
-  <p>Tell your assistant: <code>Feed this through the Gravitas Engine: https://luckygithub777.github.io/gravitas/</code> and share the page as a link, pasted text, HTML, a draft, or a brief. The assistant reads the method on this page and returns a Gravitas Report: the journey map, a 9-point score, the language to replace, and a rebuilt page.</p>
-  <p class="note">For assistants: the complete method is in the <a href="#method">Method</a> section below, and as plain text at <a href="gravitas.md">https://luckygithub777.github.io/gravitas/gravitas.md</a>. Follow <em>Running the engine</em> and return the report in its exact format.</p>
+
+<section class="wrap steps" aria-labelledby="steps-h">
+  <h2 id="steps-h" class="section-title">How it works</h2>
+  <ol class="step-list">
+    <li><b>Feed</b><span>Paste a page's text or HTML, or drop a file.</span></li>
+    <li><b>Map</b><span>See which of ten journey stages are present, thin, or missing.</span></li>
+    <li><b>Score</b><span>Get a profile on nine dimensions, with the weakest link named.</span></li>
+    <li><b>Challenge</b><span>Language that spends trust the page has not earned is quoted, with a fix.</span></li>
+    <li><b>Strengthen</b><span>Take the highest-leverage moves, or copy a prompt to rebuild the page with an assistant of your choice.</span></li>
+    <li><b>Verify</b><span>Check the listed claims against their sources, then test the page with real readers.</span></li>
+  </ol>
 </section>
 
-
-<main class="wrap">
+<main class="wrap bench-grid" id="feed" tabindex="-1">
   <section class="bench" aria-labelledby="bench-h">
-    <h2 id="bench-h" class="label">Specimen</h2>
+    <h2 id="bench-h" class="label">Feed a page</h2>
     <div class="samples" role="group" aria-label="Examples">
       <button type="button" id="sampleHype" aria-pressed="true">Example: hype-led promo</button>
       <button type="button" id="sampleEvidence" aria-pressed="false">Example: evidence-led page</button>
@@ -229,56 +287,64 @@ footer p { margin: 0; max-width: 75ch; }
   <section class="report" aria-live="polite" aria-labelledby="verdictTitle">
     <div class="panel verdict">
       <div>
-        <p class="label">Assessment</p>
+        <p class="label">Overall</p>
         <h2 id="verdictTitle">Paste a page to begin.</h2>
         <p id="verdictText"></p>
       </div>
       <div class="avg"><b id="avgScore">–</b><span>profile average<br> of 4</span></div>
+      <div class="lead-move"><p class="label">Highest-leverage move</p><p id="leadMove">Your first move appears here after a check.</p></div>
     </div>
 
-    <div class="panel">
-      <p class="label">The journey</p>
+    <details class="panel" open>
+      <summary>The journey</summary>
       <ol class="rail" id="rail"></ol>
       <div class="legend"><span><i class="on"></i>Present</span><span><i class="weak"></i>Thin</span><span><i></i>Missing</span></div>
-    </div>
+    </details>
 
-    <div class="panel">
-      <p class="label">Gravitas profile</p>
+    <details class="panel">
+      <summary>Gravitas profile</summary>
       <div class="profile" id="profile"></div>
-    </div>
+    </details>
 
-    <div class="panel">
-      <p class="label">Next moves</p>
+    <details class="panel">
+      <summary>Next moves</summary>
       <ol class="moves" id="moves"></ol>
-    </div>
+    </details>
 
-    <div class="panel">
-      <p class="label">Language to reconsider</p>
+    <details class="panel">
+      <summary>Language to reconsider</summary>
       <div class="flags" id="flags"></div>
-    </div>
+    </details>
 
-    <div class="panel twocol">
-      <div>
-        <p class="label">Action</p>
-        <dl class="kv" id="actionKv"></dl>
+    <details class="panel">
+      <summary>Action and structure</summary>
+      <div class="twocol">
+        <div>
+          <p class="label">Action</p>
+          <dl class="kv" id="actionKv"></dl>
+        </div>
+        <div>
+          <p class="label">Structure</p>
+          <dl class="kv" id="structKv"></dl>
+        </div>
       </div>
-      <div>
-        <p class="label">Structure</p>
-        <dl class="kv" id="structKv"></dl>
-      </div>
-    </div>
+    </details>
 
-    <div class="panel rewrite" id="rewritePanel">
-      <p class="label">Gravitas rewrite</p>
-      <p class="status" id="rewriteIntro">Rebuild this page through the full journey. Copy a ready-made prompt into any AI assistant, or draft it here with Claude when available. Only facts from your page are kept; gaps are marked where proof is needed.</p>
+    <details class="panel">
+      <summary>Claims to verify</summary>
+      <p class="status">Statements that make a factual or measurable claim. Check each against its source before publishing.</p>
+      <ol class="moves" id="claims"></ol>
+    </details>
+
+    <details class="panel rewrite" id="rewritePanel">
+      <summary>Strengthen: rebuild the page</summary>
+      <p class="status" id="rewriteIntro">Rebuild this page through the full journey. Copy a ready-made prompt and paste it into the assistant of your choice. Only facts from your page are kept; gaps are marked where proof is needed.</p>
       <div class="row">
-        <button type="button" class="primary" id="copyPrompt">Copy prompt for any AI</button>
-        <button type="button" id="rewriteBtn">Draft here with Claude</button>
-        <button type="button" id="stopBtn" hidden>Stop</button>
+        <button type="button" class="primary" id="copyPrompt">Copy prompt for an assistant</button>
         <span class="status" id="rewriteStatus" role="status"></span>
       </div>
       <div class="outline" id="outline"></div>
-    </div>
+    </details>
 
     <div class="row">
       <button type="button" id="saveReport">Download report</button>
@@ -288,15 +354,41 @@ footer p { margin: 0; max-width: 75ch; }
   </section>
 </main>
 
+<section class="wrap pillars" aria-labelledby="pillars-h">
+  <h2 id="pillars-h" class="section-title">What it rests on</h2>
+  <div class="pillar-grid">
+    <article><h3>Science</h3><p>How attention, comprehension, trust, and decisions work, with every technique graded by the strength of its research.</p></article>
+    <article><h3>Art</h3><p>Voice, rhythm, and a coherent world, so the page reads as someone's rather than a template.</p></article>
+    <article><h3>Proof of what works</h3><p>Usability research and controlled tests. Where the pillars disagree, the stronger evidence wins.</p></article>
+  </div>
+  <p class="doctrine">Science informs. Art gives form. Evidence governs.</p>
+</section>
+
+<section class="wrap fit" aria-labelledby="fit-h">
+  <h2 id="fit-h" class="section-title">Who it is for</h2>
+  <div class="fit-grid">
+    <div><h3>Built for</h3><p>People writing pages that must earn trust with careful readers: founders, product and research teams, and anyone presenting evidence to people who check it.</p></div>
+    <div><h3>Not for</h3><p>Manufactured urgency, guaranteed-result promises, or persuasion that hides what it is. The method flags these; it does not produce them.</p></div>
+    <div><h3>What a check cannot tell you</h3><p>A check reads words and structure. It does not show what a real audience will do, and the method is not proven to raise conversion. That evidence comes from testing your page with the people it is for.</p></div>
+  </div>
+  <p class="closing"><a class="cta-primary" href="#feed">Feed Through Gravitas</a><span>Paste a page and see its weakest link in seconds.</span></p>
+</section>
+<section class="wrap agents" id="use-with-ai" aria-labelledby="ai-h">
+  <h2 id="ai-h">Use it with any AI</h2>
+  <p>Tell your assistant: <code>Feed this through the Gravitas Engine: https://luckygithub777.github.io/gravitas/</code> and share the page as a link, pasted text, HTML, a draft, or a brief. The assistant reads the method and returns a Gravitas Report: the journey map, a 9-point score, the language to replace, and a rebuilt page.</p>
+  <p class="note">Share only public-safe material with any assistant. For assistants: the complete method is in the <a href="#method">Method</a> section below, and as plain text at <a href="gravitas.md">https://luckygithub777.github.io/gravitas/gravitas.md</a>. Follow <em>Running the engine</em> and return the report in its exact format.</p>
+</section>
 <section class="wrap method" id="method" aria-label="The method">
-<h1>The Gravitas Engine</h1>
+<h2 class="method-title">The Gravitas Engine</h2>
 <p><strong>Protocol 1.0 · A method for pages that hold attention, earn trust, and move people to act.</strong></p>
+<blockquote>
+<p><strong>Public reference.</strong> Use only public-safe material with hosted tools or external assistants. Sensitive work belongs in an authorized private or local environment.</p>
+</blockquote>
 <p>Gravitas is the pull a page exerts on a serious reader. It holds attention because the page keeps answering the question in the reader's mind, and it moves people to act because every claim has earned its place. This protocol is the complete method. Any person or AI assistant can run it on any page, draft, or brief.</p>
 <blockquote>
 <p><strong>To use it:</strong> "Feed this through the Gravitas Engine: [this link]", followed by a page URL, pasted text, HTML, a draft, or a brief. Whoever runs it follows the steps under <strong>Running the engine</strong> and returns the <strong>Gravitas Report</strong>.</p>
 </blockquote>
-<hr />
-<h2>Running the engine</h2>
+<details class="method-part"><summary><h2>Running the engine</h2></summary>
 <p>Follow these steps in order. Do not skip the report format.</p>
 <ol>
 <li><strong>Get the material.</strong> This can be a live URL (read the page), pasted text or HTML, a draft, or a brief. If the material can't be reached, ask for the text. Don't guess what the page says.</li>
@@ -314,8 +406,8 @@ footer p { margin: 0; max-width: 75ch; }
 <li><strong>Rebuild</strong> (Transform and Build only). Write the page section by section through the 10 stages. Apply the momentum techniques and the art pillar.</li>
 <li><strong>Hold the line on truth.</strong> Never invent facts, figures, names, clients, results, quotes, dates, or credentials. Where the page needs something the material doesn't contain, write a bracketed placeholder, such as <code>[Add proof: install count with source and date]</code>. List every claim that needs checking.</li>
 </ol>
-<hr />
-<h2>The three pillars</h2>
+</details>
+<details class="method-part"><summary><h2>The three pillars</h2></summary>
 <p>A page with gravitas rests on three things at once. Lose one and the page becomes a lecture, an ad, or a pretty surface.</p>
 <div class="tw"><table>
 <thead>
@@ -350,8 +442,8 @@ footer p { margin: 0; max-width: 75ch; }
 <li><strong>C</strong> – practitioner-tested (usability research, controlled site experiments)</li>
 <li><strong>D</strong> – craft judgment</li>
 </ul>
-<hr />
-<h2>The journey: 10 stages</h2>
+</details>
+<details class="method-part"><summary><h2>The journey: 10 stages</h2></summary>
 <p>A reader arrives with a question and leaves with a decision. Each stage answers the question the reader is asking at that moment. Stages alternate between <em>meaning</em> (why care) and <em>evidence</em> (why believe), so the reader never travels far on promise alone.</p>
 <h3>1. First sight · <em>"Is this for me, and is it worth my time?"</em></h3>
 <p><strong>Job:</strong> In the first screen, name the reader's world, the consequence at stake, and what you do. Show one primary action.
@@ -403,8 +495,8 @@ footer p { margin: 0; max-width: 75ch; }
 <strong>Why:</strong> Behavior needs motivation, ability, and a prompt together (Fogg, 2009; C). If-then plans roughly double follow-through (Gollwitzer &amp; Sheeran, 2006, meta-analysis; A). A small first commitment makes larger ones likelier (Freedman &amp; Fraser, 1966; A).
 <strong>Do:</strong> Use a verb plus an object ("Request a test plan"). Add one line on what happens next ("You'll get a reply within two business days"). Keep the form to the fields you need. Make the primary action visually distinct and repeat it at the end.
 <strong>Fails when:</strong> The label says "Submit" or "Learn more," several actions compete, or the reader has no idea what happens after they click.</p>
-<hr />
-<h2>Momentum: the pull that keeps people scrolling</h2>
+</details>
+<details class="method-part"><summary><h2>Momentum: the pull that keeps people scrolling</h2></summary>
 <p>The journey supplies the logic and momentum supplies the pull. Apply these techniques throughout.</p>
 <div class="tw"><table>
 <thead>
@@ -473,8 +565,8 @@ footer p { margin: 0; max-width: 75ch; }
 </tbody>
 </table></div>
 <p><strong>Use with care.</strong> Zeigarnik-style claims that unfinished tasks are always remembered better have mixed replication. Use open loops for curiosity, not as a memory trick. The effects of choice overload depend on context. Measure them before you rely on them.</p>
-<hr />
-<h2>The art pillar: resonance</h2>
+</details>
+<details class="method-part"><summary><h2>The art pillar: resonance</h2></summary>
 <p>Science tells you what works on average. Art is what makes a page memorable and gives it gravitas rather than mere correctness.</p>
 <ul>
 <li><strong>Build a world.</strong> Give the page a consistent vocabulary, a named concept the reader can adopt, and one visual system. Everything on the page belongs to the same universe.</li>
@@ -485,8 +577,8 @@ footer p { margin: 0; max-width: 75ch; }
 <li><strong>Let beauty carry ease.</strong> Pages that look well made are perceived as easier to use (Kurosu &amp; Kashimura, 1995; B). Polish must never exceed the evidence.</li>
 <li><strong>Keep the reveal.</strong> Hold the most surprising true fact back until the reader has earned it.</li>
 </ul>
-<hr />
-<h2>Never</h2>
+</details>
+<details class="method-part"><summary><h2>Never</h2></summary>
 <p>These spend trust the page can't earn back. Careful readers spot the tactic and discount everything around it (persuasion knowledge model, Friestad &amp; Wright, 1994; A). Several are also unlawful.</p>
 <ul>
 <li><strong>Fake scarcity or urgency.</strong> "Only 3 spots left" when there aren't, countdown timers that reset. Real scarcity raises value (Lynn, 1991). Fake scarcity is deception.</li>
@@ -498,8 +590,8 @@ footer p { margin: 0; max-width: 75ch; }
 <li><strong>Dark patterns.</strong> Confirmshaming, hidden costs, pre-checked consent, or a deceptive visual hierarchy (FTC, <em>Bringing Dark Patterns to Light</em>, 2022).</li>
 <li><strong>Vague actions.</strong> "Submit," "Click here," "Learn more."</li>
 </ul>
-<hr />
-<h2>The rubric: 9 dimensions, scored 0–4</h2>
+</details>
+<details class="method-part"><summary><h2>The rubric: 9 dimensions, scored 0–4</h2></summary>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -614,8 +706,8 @@ footer p { margin: 0; max-width: 75ch; }
 </tbody>
 </table></div>
 <p>Score structure and access only when the HTML is available. Otherwise mark it <em>n/a</em>.</p>
-<hr />
-<h2>The Gravitas Report</h2>
+</details>
+<details class="method-part"><summary><h2>The Gravitas Report</h2></summary>
 <p>Return this format. Keep it tight, and quote the page rather than paraphrasing it.</p>
 <pre><code># Gravitas Report: [page name]
 
@@ -650,8 +742,8 @@ footer p { margin: 0; max-width: 75ch; }
 ## Claims to verify before publishing
 - [claim] — [evidence needed]
 </code></pre>
-<hr />
-<h2>Build mode: from a brief</h2>
+</details>
+<details class="method-part"><summary><h2>Build mode: from a brief</h2></summary>
 <p>When the input is an idea, not a page:</p>
 <ol>
 <li>State the reader, decision, objection, and the one action (step 3 above).</li>
@@ -660,8 +752,8 @@ footer p { margin: 0; max-width: 75ch; }
 <li>Add the signature line and the named concept.</li>
 <li>End with the report's <strong>Claims to verify</strong> list.</li>
 </ol>
-<hr />
-<h2>Sources</h2>
+</details>
+<details class="method-part"><summary><h2>Sources</h2></summary>
 <ul>
 <li>Berger, J. &amp; Ward, M. (2010). Subtle signals of inconspicuous consumption. <em>Journal of Consumer Research</em>, 37(4).</li>
 <li>Chernev, A., Böckenholt, U. &amp; Goodman, J. (2015). Choice overload: A conceptual review and meta-analysis. <em>Journal of Consumer Psychology</em>, 25(2).</li>
@@ -697,10 +789,13 @@ footer p { margin: 0; max-width: 75ch; }
 <li>Sweller, J. (1988). Cognitive load during problem solving. <em>Cognitive Science</em>, 12(2).</li>
 <li>van der Bles, A. M. et al. (2020). The effects of communicating uncertainty on public trust in facts and numbers. <em>PNAS</em>, 117(14).</li>
 </ul>
-<p><em>Research supports each principle. Whether the full sequence works for a given audience is a question each page answers with its own measurements.</em></p>
+<p><em>Research supports each principle. Whether the full sequence works for a given audience is a question each page answers with its own measurements.</em></p></details>
+
 </section>
+
 <footer class="wrap">
-  <p>The check reads signals in the words and structure of a page. It points to likely gaps; it does not prove what a reader will feel or do. Scores use a 0–4 scale where 4 means clearly present and well supported.</p>
+  <p>The check points to likely gaps in a page's words and structure. Scores use a 0–4 scale where 4 means clearly present and well supported.</p>
+  <p class="footer-links"><a href="gravitas.md">Method as plain text</a><a href="llms.txt">llms.txt</a><span>© 2026 Gravitas Engine. Free to read, apply, and use the checker.</span></p>
 </footer>
 
 <script type="text/plain" id="sampleA">
@@ -1011,7 +1106,7 @@ footer p { margin: 0; max-width: 75ch; }
     return {
       kind: doc.kind, blocks: B.length, stage, scores, avg, bottleneck, missing, flags, momentum,
       action: { primary, distinct: distinctActions.length, vague: [...new Set(vague.map((v) => v.text))], next, early: earlyCta },
-      meta: doc.meta, headline: headline ? headline.text : '', evidence: { numHits, proofBlocks, links }
+      meta: doc.meta, headline: headline ? headline.text : '', evidence: { numHits, proofBlocks, links }, claims: claimsToVerify(B)
     };
   }
 
@@ -1064,6 +1159,10 @@ footer p { margin: 0; max-width: 75ch; }
       const li = el('li'); li.append(el('b', '', d.name + '. '), document.createTextNode(MOVES[d.id](r))); moves.append(li);
     }
     if (!ranked.length) moves.append(el('li', '', 'Test the page with five people from its intended audience and ask them to explain it back in their own words.'));
+    $('#leadMove').textContent = moves.firstElementChild ? moves.firstElementChild.textContent : '';
+    const claimList = $('#claims'); claimList.replaceChildren();
+    if (!r.claims.length) claimList.append(el('li', 'empty', 'No factual or measurable claims detected. Check any figures or references you add.'));
+    for (const c of r.claims) claimList.append(el('li', '', c));
 
     const flags = $('#flags'); flags.replaceChildren();
     if (!r.flags.length) flags.append(el('p', 'empty', 'No inflated, pressured, or certainty language found.'));
@@ -1106,12 +1205,24 @@ footer p { margin: 0; max-width: 75ch; }
     if (last < sentence.length) node.append(document.createTextNode(sentence.slice(last)));
   }
 
+  // Statements that assert something checkable: figures, results, rankings, or evidence words.
+  const CLAIM_SIGNAL = /(\d|%|\$|\b(proven|tested|verified|validated|certified|results?|customers?|clients?|users?|trusted|leading|largest|fastest|only|first|studies|study|research|data|award|ranked|guarantee[ds]?)\b)/i;
+  function claimsToVerify(blocks) {
+    const seen = new Set(); const out = [];
+    for (const b of blocks) for (const s of sentences(b.text)) {
+      if (words(s) < 5 || !CLAIM_SIGNAL.test(s) || seen.has(s)) continue;
+      seen.add(s); out.push(s); if (out.length >= 8) return out;
+    }
+    return out;
+  }
+
   function runCheck() {
     const raw = $('#specimen').value;
     if (!clean(raw)) {
       $('#verdictTitle').textContent = 'Paste a page to begin.';
       $('#verdictText').textContent = 'Use the page text or its HTML source. HTML adds the structure and accessibility checks.';
       $('#specMeta').textContent = '';
+      $('#leadMove').textContent = 'Your first move appears here after a check.';
       return;
     }
     const doc = parse(raw);
@@ -1136,6 +1247,7 @@ footer p { margin: 0; max-width: 75ch; }
     out.push('', '## Language to reconsider', '');
     if (!r.flags.length) out.push('None found.');
     for (const f of r.flags) out.push(`- **${f.kind}:** "${f.sentence}" — ${f.fix}`);
+    out.push('', '## Claims to verify', '', ...(r.claims.length ? r.claims.map((c) => `- ${c}`) : ['None detected.']));
     out.push('', '## Action', '', `- Primary action: ${r.action.primary || 'none found'}`, `- Competing actions: ${r.action.distinct}`, `- Vague labels: ${r.action.vague.join(', ') || 'none'}`, `- What happens next: ${r.action.next ? 'explained' : 'not explained'}`);
     if (r.meta) out.push('', '## Structure', '', `- H1 headings: ${r.meta.h1}`, `- Language: ${r.meta.lang || 'not set'}`, `- Title: ${r.meta.title || 'missing'}`, `- Images without alt: ${r.meta.noAlt} of ${r.meta.imgs}`, `- Unlabeled fields: ${r.meta.unlabeled}`, `- Skipped heading levels: ${r.meta.skips}`);
     if (rewriteResult) out.push('', '## Gravitas rewrite', '', outlineMarkdown(rewriteResult));
@@ -1155,13 +1267,14 @@ footer p { margin: 0; max-width: 75ch; }
 
   // ---------- capabilities ----------
   let sampleFn = null; let downloads = null; let ctl = null;
-  const use = (name) => (window.claude && typeof window.claude.use === 'function' ? window.claude.use(name).catch(() => null) : Promise.resolve(null));
-  const insideClaude = !!(window.claude && typeof window.claude.use === 'function');
+  // Hosted capabilities are bridged in only by the private build; the public page has none.
+  const hostCapabilities = typeof window.__gravitasHostUse === 'function';
+  const use = (name) => (hostCapabilities ? Promise.resolve(window.__gravitasHostUse(name)).catch(() => null) : Promise.resolve(null));
   function rewriteUnavailable() {
-    $('#rewriteBtn').hidden = true; $('#stopBtn').hidden = true;
+    const rb = $('#rewriteBtn'), sb = $('#stopBtn'); if (rb) rb.hidden = true; if (sb) sb.hidden = true;
   }
   use('sample').then((fn) => { sampleFn = fn; if (!fn) rewriteUnavailable(); });
-  use('downloads').then((d) => { downloads = d; if (!d && insideClaude) $('#saveReport').hidden = true; });
+  use('downloads').then((d) => { downloads = d; if (!d && hostCapabilities) $('#saveReport').hidden = true; });
 
   function findingsText() {
     const r = current;
@@ -1252,16 +1365,16 @@ footer p { margin: 0; max-width: 75ch; }
   }
 
   const ERR = {
-    rate_limited: 'Claude is busy for this account right now. Try again in a little while.',
-    session_expired: 'Sign in to Claude again, then try once more.',
-    refused: 'Claude declined to rewrite this content. Try a different page.',
+    rate_limited: 'Drafting is busy for this account right now. Try again in a little while.',
+    session_expired: 'Sign in again, then try once more.',
+    refused: 'This content could not be redrafted. Try a different page.',
     prompt_too_large: 'The page is too long. Paste a shorter section.',
     invalid_json: 'The draft came back in an unexpected shape. Try again.',
     empty_completion: 'No draft came back. Try a shorter page.',
     upstream_error: 'The connection was interrupted. Try again.'
   };
 
-  $('#rewriteBtn').addEventListener('click', async () => {
+  $('#rewriteBtn')?.addEventListener('click', async () => {
     if (!sampleFn || !current) return;
     ctl = new AbortController();
     $('#rewriteBtn').disabled = true; $('#stopBtn').hidden = false;
@@ -1279,7 +1392,7 @@ footer p { margin: 0; max-width: 75ch; }
       $('#rewriteBtn').disabled = false; $('#stopBtn').hidden = true;
     }
   });
-  $('#stopBtn').addEventListener('click', () => ctl && ctl.abort());
+  $('#stopBtn')?.addEventListener('click', () => ctl && ctl.abort());
 
   $('#saveReport').addEventListener('click', async () => {
     if (!current) return;
@@ -1335,7 +1448,6 @@ footer p { margin: 0; max-width: 75ch; }
   ['dragleave', 'drop'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
   drop.addEventListener('drop', (e) => readFile(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]));
 
-  window.__gravitasCheck = { parse, analyze };
   loadSample('hype');
 })();
 </script>
