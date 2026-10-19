@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-tRgzi0UzaTs6KcV/rMwrzJvpBJ8XjTiJbpTfc2hzuj0='; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Feed any page through the Gravitas Engine: a 10-stage journey and 9-point profile for pages that hold attention, earn trust, and move people to act.">
 <meta property="og:title" content="Gravitas Engine">
@@ -12,7 +14,6 @@
 <link rel="alternate" type="text/markdown" href="gravitas.md" title="Gravitas Engine protocol">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1115'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23d6ba7b' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23d6ba7b'/%3E%3C/svg%3E">
 <title>Gravitas Engine</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
@@ -194,13 +195,15 @@ footer p { margin: 0; max-width: 75ch; }
     <div class="mark"><h1>Gravitas Engine</h1><span class="scale">10-stage journey · 9-point profile</span></div>
     <p class="lede">Paste a page and see whether it earns trust: which parts of a credible journey it covers, where the language outruns the evidence, and the one change that would lift it most.</p>
     <p class="links"><a href="#method">Read the method</a><span aria-hidden="true">·</span><a href="#use-with-ai">Use it with any AI</a></p>
-    <p class="privacy">Runs in your browser. Nothing you paste leaves this page unless you copy it out or draft a rewrite.</p>
+    <p class="privacy"><span><strong>Public-safe information only.</strong> Do not enter confidential, proprietary, controlled, regulated, credential, personal, legal-sensitive, or unpublished strategic information. Use the private/local Gravitas Engine for sensitive work.</span></p>
+    <p class="privacy">The check runs in your browser. Nothing you paste is stored or sent anywhere; copying a prompt or report puts text on your clipboard for you to paste where you choose.</p>
+
   </div>
 </header>
 <section class="wrap agents" id="use-with-ai" aria-labelledby="ai-h">
   <h2 id="ai-h">Use it with any AI</h2>
   <p>Tell your assistant: <code>Feed this through the Gravitas Engine: https://luckygithub777.github.io/gravitas/</code> and share the page as a link, pasted text, HTML, a draft, or a brief. The assistant reads the method on this page and returns a Gravitas Report: the journey map, a 9-point score, the language to replace, and a rebuilt page.</p>
-  <p class="note">For assistants: the complete method is in the <a href="#method">Method</a> section below, and as plain text at <a href="gravitas.md">https://luckygithub777.github.io/gravitas/gravitas.md</a>. Follow <em>Running the engine</em> and return the report in its exact format.</p>
+  <p class="note">Share only public-safe material with any assistant. For assistants: the complete method is in the <a href="#method">Method</a> section below, and as plain text at <a href="gravitas.md">https://luckygithub777.github.io/gravitas/gravitas.md</a>. Follow <em>Running the engine</em> and return the report in its exact format.</p>
 </section>
 
 
@@ -270,11 +273,9 @@ footer p { margin: 0; max-width: 75ch; }
 
     <div class="panel rewrite" id="rewritePanel">
       <p class="label">Gravitas rewrite</p>
-      <p class="status" id="rewriteIntro">Rebuild this page through the full journey. Copy a ready-made prompt into any AI assistant, or draft it here with Claude when available. Only facts from your page are kept; gaps are marked where proof is needed.</p>
+      <p class="status" id="rewriteIntro">Rebuild this page through the full journey. Copy a ready-made prompt and paste it into the assistant of your choice. Only facts from your page are kept; gaps are marked where proof is needed.</p>
       <div class="row">
         <button type="button" class="primary" id="copyPrompt">Copy prompt for any AI</button>
-        <button type="button" id="rewriteBtn">Draft here with Claude</button>
-        <button type="button" id="stopBtn" hidden>Stop</button>
         <span class="status" id="rewriteStatus" role="status"></span>
       </div>
       <div class="outline" id="outline"></div>
@@ -1155,13 +1156,14 @@ footer p { margin: 0; max-width: 75ch; }
 
   // ---------- capabilities ----------
   let sampleFn = null; let downloads = null; let ctl = null;
-  const use = (name) => (window.claude && typeof window.claude.use === 'function' ? window.claude.use(name).catch(() => null) : Promise.resolve(null));
-  const insideClaude = !!(window.claude && typeof window.claude.use === 'function');
+  // Hosted capabilities are bridged in only by the private build; the public page has none.
+  const hostCapabilities = typeof window.__gravitasHostUse === 'function';
+  const use = (name) => (hostCapabilities ? Promise.resolve(window.__gravitasHostUse(name)).catch(() => null) : Promise.resolve(null));
   function rewriteUnavailable() {
-    $('#rewriteBtn').hidden = true; $('#stopBtn').hidden = true;
+    const rb = $('#rewriteBtn'), sb = $('#stopBtn'); if (rb) rb.hidden = true; if (sb) sb.hidden = true;
   }
   use('sample').then((fn) => { sampleFn = fn; if (!fn) rewriteUnavailable(); });
-  use('downloads').then((d) => { downloads = d; if (!d && insideClaude) $('#saveReport').hidden = true; });
+  use('downloads').then((d) => { downloads = d; if (!d && hostCapabilities) $('#saveReport').hidden = true; });
 
   function findingsText() {
     const r = current;
@@ -1252,16 +1254,16 @@ footer p { margin: 0; max-width: 75ch; }
   }
 
   const ERR = {
-    rate_limited: 'Claude is busy for this account right now. Try again in a little while.',
-    session_expired: 'Sign in to Claude again, then try once more.',
-    refused: 'Claude declined to rewrite this content. Try a different page.',
+    rate_limited: 'Drafting is busy for this account right now. Try again in a little while.',
+    session_expired: 'Sign in again, then try once more.',
+    refused: 'This content could not be redrafted. Try a different page.',
     prompt_too_large: 'The page is too long. Paste a shorter section.',
     invalid_json: 'The draft came back in an unexpected shape. Try again.',
     empty_completion: 'No draft came back. Try a shorter page.',
     upstream_error: 'The connection was interrupted. Try again.'
   };
 
-  $('#rewriteBtn').addEventListener('click', async () => {
+  $('#rewriteBtn')?.addEventListener('click', async () => {
     if (!sampleFn || !current) return;
     ctl = new AbortController();
     $('#rewriteBtn').disabled = true; $('#stopBtn').hidden = false;
@@ -1279,7 +1281,7 @@ footer p { margin: 0; max-width: 75ch; }
       $('#rewriteBtn').disabled = false; $('#stopBtn').hidden = true;
     }
   });
-  $('#stopBtn').addEventListener('click', () => ctl && ctl.abort());
+  $('#stopBtn')?.addEventListener('click', () => ctl && ctl.abort());
 
   $('#saveReport').addEventListener('click', async () => {
     if (!current) return;
@@ -1335,7 +1337,6 @@ footer p { margin: 0; max-width: 75ch; }
   ['dragleave', 'drop'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
   drop.addEventListener('drop', (e) => readFile(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]));
 
-  window.__gravitasCheck = { parse, analyze };
   loadSample('hype');
 })();
 </script>
