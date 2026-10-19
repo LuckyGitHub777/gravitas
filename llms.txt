@@ -2,6 +2,8 @@
 
 > A method for web pages that hold attention, earn trust, and move people to act. When someone says "feed this through the Gravitas Engine," read the protocol below, follow "Running the engine," and return the Gravitas Report in its exact format.
 
+Public reference. Use only public-safe material with hosted tools or external assistants. Sensitive work belongs in an authorized private or local environment.
+
 ## Protocol
 
 - [Gravitas Engine protocol](https://luckygithub777.github.io/gravitas/gravitas.md): the full method in plain Markdown: the three pillars, the 10-stage journey, momentum techniques, the art pillar, what never to do, the 9-dimension rubric, the report format, and build mode.

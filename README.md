@@ -4,6 +4,8 @@ A method for web pages that hold attention, earn trust, and move people to act, 
 
 **Open it:** https://luckygithub777.github.io/gravitas/
 
+Public reference. Use only public-safe material with hosted tools or external assistants. Sensitive work belongs in an authorized private or local environment.
+
 ## Use it with any AI
 
 Tell your assistant:
@@ -25,7 +27,7 @@ Ask for **Check** (score only), **Transform** (score and rebuild, the default fo
 
 ## Use it in the browser
 
-The site includes **Gravitas Check**: paste a page's text or HTML, or drop a file, and see the journey, the profile, flagged language, and next moves straight away. It runs entirely in your browser. **Copy prompt for any AI** packages the page and findings for a full rewrite in any assistant.
+The site includes **Gravitas Check**: paste a page's text or HTML, or drop a file, and see the journey, the profile, flagged language, and next moves straight away. It runs entirely in your browser, loads nothing from other sites, and stores nothing. **Copy prompt for an assistant** packages the page and findings for a full rewrite in the assistant of your choice.
 
 ## Files
 
