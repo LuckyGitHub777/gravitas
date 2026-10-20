@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-iDFjQASy7OMIIIcVlqLFfAzKjyvaYrqiwUGjcWgjV6M='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-uT3K5CGOxPgNJdmHhiLk0NdIaaMe3yvVG6SqWIk3P4U='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Feed a page through Gravitas: its journey, a nine-dimension profile, the weakest link, and the one change that would lift it most. Public-safe information only.">
@@ -274,7 +274,7 @@ details.panel[open] > summary { margin-bottom: 12px; }
     <label for="specimen" class="sr">Page HTML or text</label>
     <textarea id="specimen" spellcheck="false" placeholder="Paste the page's text, or its HTML source (View Source, select all, copy)."></textarea>
     <div class="drop" id="drop">
-      <span>Or drop an .html or .txt file here, or</span>
+      <span>Or drop an .html, .txt, or .md file here, or</span>
       <label for="fileInput">choose a file</label>
       <input type="file" id="fileInput" accept=".html,.htm,.txt,.md,text/html,text/plain">
     </div>
@@ -284,9 +284,9 @@ details.panel[open] > summary { margin-bottom: 12px; }
     </div>
   </section>
 
-  <section class="report" aria-live="polite" aria-labelledby="verdictTitle">
+  <section class="report" aria-labelledby="verdictTitle">
     <div class="panel verdict">
-      <div>
+      <div role="status" aria-live="polite" aria-atomic="true">
         <p class="label">Overall</p>
         <h2 id="verdictTitle">Paste a page to begin.</h2>
         <p id="verdictText"></p>
@@ -873,19 +873,20 @@ details.panel[open] > summary { margin-bottom: 12px; }
     { k: 'Guarantee or certainty', sev: 'bad', rx: /\b(guarantee[ds]?|risk[- ]free|certain to|will definitely|proven to|never fails?|for good)\b/gi, fix: 'Say what is supported and what is not. Certainty language invites scrutiny the page cannot meet.' },
     { k: 'Artificial urgency', sev: 'bad', rx: /\b(act now|limited time|last chance|only chance|hurry|don'?t miss|spots? (are|is) limited|only \d+ (left|spots|seats)|ends soon|today only|before it'?s too late)\b/gi, fix: 'Give the real reason for the timing, or remove it. Pressure costs trust with careful readers.' },
     { k: 'Destiny or secret framing', sev: 'warn', rx: /\b(unlock (your|the)|hidden (potential|secret|pattern|identity)|destined|born to|chosen few|secret (to|formula)|exact formula|don'?t want you to know|quantum leap|reprogram)\b/gi, fix: 'Speak to the reader’s real role and decision instead of a hidden flaw, a secret, or a destiny.' },
+    { k: 'Financial outcome implication', sev: 'warn', rx: /\b(?:one|two|three|four|five|six|seven|eight|nine|\d+)(?:\s+and\s+(?:one|two|three|four|five|six|seven|eight|nine|\d+))?\s*[- ]?figure\b(?:[^.!?]{0,80}\b(?:income|revenue|profit|wealth|transformation|returns?|results?)\b)?/gi, fix: 'Define the metric, baseline, time period, typicality, and evidence. Do not let a large financial implication stand in for a measurable result.' },
     { k: 'Unsupported crowd claim', sev: 'warn', rx: /\b(thousands|millions|countless|everyone|all the top)\b[^.!?]{0,60}\b(have|are|use|trust|changed|transformed)\b/gi, fix: 'Show the count, its source, and what it measures, or drop it.' }
   ];
 
   const DIMS = [
     { id: 'first', name: 'First sight', anchors: ['No clear opening', 'A headline, little else', 'Headline with partial support', 'Clear opening with one gap', 'Headline, context, and an early action'] },
-    { id: 'flow', name: 'Narrative flow', anchors: ['Few journey stages present', 'Most stages missing', 'About half the journey', 'Most of the journey', 'The full journey is present'] },
+    { id: 'flow', name: 'Narrative flow', anchors: ['Few journey stages present', 'Most stages missing', 'About half the journey', 'Most of the journey', 'The full journey, in order'] },
     { id: 'mechanism', name: 'Tension and mechanism', anchors: ['No problem or method shown', 'One of problem or method', 'Problem and method, briefly', 'Problem and method, clearly', 'A real gap and visible steps that close it'] },
     { id: 'evidence', name: 'Evidence', anchors: ['No proof on the page', 'A trace of proof', 'Some proof, unevenly placed', 'Proof supports most claims', 'Proof throughout, with sources'] },
     { id: 'restraint', name: 'Restraint', anchors: ['Heavy hype and pressure', 'Frequent hype', 'Several inflated phrases', 'Mostly calm, one or two phrases', 'Calm and specific throughout'] },
     { id: 'boundaries', name: 'Fit and boundaries', anchors: ['No fit or limits stated', 'A hint of fit or limits', 'Fit or limits, not both', 'Fit and limits, briefly', 'Clear fit, non-fit, and honest limits'] },
     { id: 'action', name: 'Action clarity', anchors: ['No clear next step', 'An action, but vague', 'A clear action, competing or unexplained', 'One clear action, mostly explained', 'One specific action and what happens next'] },
     { id: 'momentum', name: 'Momentum', anchors: ['A wall of text', 'Headings don’t carry the story', 'Some pull, uneven rhythm', 'Skimmable, with an open loop', 'Headings tell the story, loops close, the end peaks'] },
-    { id: 'structure', name: 'Structure and access', anchors: ['Several structural faults', 'Structural faults to fix', 'Two structural gaps', 'One structural gap', 'One H1, language set, alt text, labeled fields'] }
+    { id: 'structure', name: 'Structure and access', anchors: ['Several structural faults', 'Structural faults to fix', 'Two structural gaps', 'One structural gap', 'One H1, language set, alt text, labeled fields, ordered headings'] }
   ];
 
   const MOVES = {
@@ -953,8 +954,8 @@ details.panel[open] > summary { margin-bottom: 12px; }
     });
     if (!blocks.length) {
       const fallback = parseText(doc.body ? (doc.body.textContent || '') : raw);
-      fallback.kind = 'text';
-      return fallback;
+      blocks.push(...fallback.blocks);
+      ctas.push(...fallback.ctas);
     }
     const imgs = [...doc.querySelectorAll('img')];
     const inputs = [...doc.querySelectorAll('input:not([type=hidden]):not([type=submit]):not([type=button]),select,textarea')];
@@ -974,8 +975,9 @@ details.panel[open] > summary { margin-bottom: 12px; }
     };
   }
 
+  const HTML_FRAGMENT = /<\s*(html|body|main|section|div|p|h[1-6]|a|span|br|article|ul|ol|li|table|thead|tbody|tfoot|tr|th|td|nav|form|label|input|select|option|textarea|button|img|picture|source|figure|figcaption|blockquote|dl|dt|dd)\b/i;
   function parse(raw) {
-    return /<\s*(html|body|main|section|div|p|h[1-6]|a|span|br|article|ul|li)\b/i.test(raw) ? parseHtml(raw) : parseText(raw);
+    return HTML_FRAGMENT.test(raw) ? parseHtml(raw) : parseText(raw);
   }
 
   // ---------- analysis ----------
@@ -1025,7 +1027,13 @@ details.panel[open] > summary { margin-bottom: 12px; }
     const headIdx = B.findIndex((b) => b.type === 'h');
     const headline = headIdx >= 0 ? B[headIdx] : B[0];
     const sub = B.slice(Math.max(headIdx, 0) + 1, Math.max(headIdx, 0) + 3).find((b) => b.type === 'p' && words(b.text) >= 8);
-    const actionCtas = doc.ctas.filter((c) => LEX.actionWords.test(c.text));
+    const CTA_SIGNOFF = /^(?:see you (?:there|soon)|talk soon|thanks(?: again)?|thank you|best(?: regards)?|regards)[.!]?$/i;
+    let actionCtas = doc.ctas.filter((c) => LEX.actionWords.test(c.text) && !CTA_SIGNOFF.test(c.text.trim()));
+    // Plain text has no buttons: fall back to the last short imperative sentence, such as "Reserve your seat now."
+    if (!actionCtas.length && doc.kind === 'text') {
+      const imperative = B.map((b, i) => ({ b, i })).filter(({ b }) => b.type === 'p' && words(b.text) <= 16 && LEX.actionWords.test(b.text) && !CTA_SIGNOFF.test(b.text.trim()));
+      if (imperative.length) { const last = imperative[imperative.length - 1]; actionCtas = [{ text: last.b.text, pos: last.i }]; }
+    }
     const earlyCta = actionCtas.some((c) => c.pos <= Math.max(headIdx, 0) + 3);
     let firstScore = 0;
     if (headline) firstScore++;
@@ -1037,18 +1045,34 @@ details.panel[open] > summary { margin-bottom: 12px; }
     firstScore = Math.max(0, firstScore);
     stage.first = { state: firstScore >= 3 ? 'on' : firstScore >= 1 ? 'weak' : 'off', i: headline ? B.indexOf(headline) : -1 };
 
-    for (const id of ['recognition', 'significance', 'tension', 'future', 'fit', 'boundaries']) stage[id] = locate(LEX[id], 1);
+    for (const id of ['recognition', 'significance', 'tension', 'future', 'fit']) stage[id] = locate(LEX[id], 1);
+    // A limit placed on the reader ("you cannot outperform…") is rhetoric, not a limit of the offer.
+    const READER_NEGATION = /\byou\s+(?:cannot|can'?t|won'?t|do not|don'?t)\b/gi;
+    const BOUNDARY_DENIAL = /\b(?:this|it)\s+is\s+not\s+(?:hype|fluff|marketing|sales|pressure|forced positivity)\b/i;
+    const locateBoundary = () => {
+      let thin = -1;
+      for (let i = 1; i < B.length; i++) {
+        const candidate = sentences(plain[i]).filter((s) => !BOUNDARY_DENIAL.test(s)).map((s) => s.replace(READER_NEGATION, ' ')).join(' ');
+        if (!candidate || !LEX.boundaries.test(candidate)) continue;
+        if (B[i].type === 'p' && words(candidate) >= 10) return { state: 'on', i };
+        if (thin < 0) thin = i;
+      }
+      return thin >= 0 ? { state: 'weak', i: thin } : { state: 'off', i: -1 };
+    };
+    stage.boundaries = locateBoundary();
     const listRun = B.filter((b) => b.list).length >= 3 || /\b(step|stage) (1|one)\b/i.test(text);
     stage.mechanism = locate(LEX.mechanism, 1);
     const mechanismNamed = stage.mechanism.state === 'on';
     if (listRun && stage.mechanism.state !== 'on') stage.mechanism = { state: stage.mechanism.state === 'weak' ? 'on' : 'weak', i: B.findIndex((b) => b.list) };
 
-    // Numbers only count as evidence when they sit outside flagged sentences
-    const evidenceText = B.flatMap((b) => sentences(b.text)).filter((s) => !flagged.has(s)).join('\n');
-    const numHits = (evidenceText.match(LEX.number) || []).length;
+    // Evidence weight comes from proof-bearing copy, not from the mere presence of links.
     const proofBlocks = B.filter((b, i) => b.type === 'p' && plain[i] && LEX.proof.test(plain[i])).length;
+    const proofEvidenceText = B.map((b, i) => (plain[i] && LEX.proof.test(plain[i]) ? plain[i] : '')).filter(Boolean).join('\n');
+    const numHits = (proofEvidenceText.match(LEX.number) || []).length;
     const links = doc.meta ? doc.meta.externalLinks : 0;
-    stage.proof = proofBlocks + numHits + links > 0 ? (proofBlocks >= 1 && (numHits + links) >= 1 ? { state: 'on', i: B.findIndex((b) => LEX.proof.test(b.text)) } : { state: 'weak', i: B.findIndex((b) => LEX.proof.test(b.text)) }) : { state: 'off', i: -1 };
+    stage.proof = proofBlocks > 0
+      ? (proofBlocks >= 2 || numHits >= 1 ? { state: 'on', i: B.findIndex((b) => LEX.proof.test(b.text)) } : { state: 'weak', i: B.findIndex((b) => LEX.proof.test(b.text)) })
+      : { state: 'off', i: -1 };
 
     const distinctActions = [...new Set(actionCtas.map((c) => c.text.toLowerCase()))];
     const vague = doc.ctas.filter((c) => VAGUE.test(c.text));
@@ -1058,14 +1082,28 @@ details.panel[open] > summary { margin-bottom: 12px; }
     // Scores
     const middle = ['recognition', 'significance', 'tension', 'mechanism', 'proof', 'future', 'fit', 'boundaries'];
     const flowPts = middle.reduce((a, id) => a + (stage[id].state === 'on' ? 1 : stage[id].state === 'weak' ? 0.5 : 0), 0);
+    // Order is judged by the block that carries each stage (proof: the first proof paragraph with a figure),
+    // allowing one out-of-place pair because stage vocabulary overlaps.
+    const hasFigure = (s) => (s.match(LEX.number) || []).length > 0;
+    const proofCarrier = B.findIndex((b, i) => b.type === 'p' && plain[i] && LEX.proof.test(plain[i]) && hasFigure(plain[i]));
+    const at = (id) => (id === 'proof' && proofCarrier >= 0 ? proofCarrier : stage[id].i);
+    const placed = middle.filter((id) => at(id) >= 0).map(at);
+    let inversions = 0;
+    for (let a = 0; a < placed.length; a++) for (let b = a + 1; b < placed.length; b++) if (placed[a] > placed[b]) inversions++;
+    const journeyInOrder = inversions <= 1;
+    let flowScore = Math.round((flowPts / middle.length) * 4);
+    if (flowScore === 4 && !journeyInOrder) flowScore = 3;
     const pts = (s) => (s.state === 'on' ? 1 : s.state === 'weak' ? 0.5 : 0);
-    const evidenceTotal = proofBlocks + numHits + links * 2;
+    let evidenceScore = 0;
+    if (proofBlocks === 1) evidenceScore = numHits >= 1 ? 2 : 1;
+    else if (proofBlocks === 2) evidenceScore = numHits >= 1 ? 3 : 2;
+    else if (proofBlocks >= 3) evidenceScore = numHits >= 1 ? 4 : 3;
     const restraintCount = flags.length;
     const scores = {
       first: firstScore,
-      flow: Math.round((flowPts / middle.length) * 4),
+      flow: flowScore,
       mechanism: Math.min(4, Math.round(pts(stage.tension) * 1.5 + pts(stage.mechanism) * 1.5 + (listRun && mechanismNamed ? 1 : 0))),
-      evidence: evidenceTotal === 0 ? 0 : evidenceTotal <= 2 ? 1 : evidenceTotal <= 5 ? 2 : evidenceTotal <= 9 ? 3 : (links > 0 || proofBlocks >= 3 ? 4 : 3),
+      evidence: evidenceScore,
       restraint: restraintCount === 0 ? 4 : restraintCount <= 2 ? 3 : restraintCount <= 4 ? 2 : restraintCount <= 7 ? 1 : 0,
       boundaries: Math.round(pts(stage.fit) * 2 + pts(stage.boundaries) * 2),
       action: (actionCtas.length ? 1 : 0) + (distinctActions.length >= 1 && distinctActions.length <= 2 ? 1 : 0) + (actionCtas.length && !vague.length ? 1 : 0) + (next ? 1 : 0),
@@ -1206,7 +1244,7 @@ details.panel[open] > summary { margin-bottom: 12px; }
   }
 
   // Statements that assert something checkable: figures, results, rankings, or evidence words.
-  const CLAIM_SIGNAL = /(\d|%|\$|\b(proven|tested|verified|validated|certified|results?|customers?|clients?|users?|trusted|leading|largest|fastest|only|first|studies|study|research|data|award|ranked|guarantee[ds]?)\b)/i;
+  const CLAIM_SIGNAL = /(\d|%|\$|\b(proven|tested|verified|validated|certified|results?|customers?|clients?|users?|trusted|leading|largest|fastest|only|first|studies|study|research|data|award|ranked|guarantee[ds]?|income|revenue|profit|wealth|financial|quantum leaps?|reprogram(?:med|ming)?|permanent(?:ly)?|for good|every|always|never)\b|\b(?:one|two|three|four|five|six|seven|eight|nine)(?:\s+and\s+(?:one|two|three|four|five|six|seven|eight|nine))?\s*[- ]?figure\b)/i;
   function claimsToVerify(blocks) {
     const seen = new Set(); const out = [];
     for (const b of blocks) for (const s of sentences(b.text)) {
