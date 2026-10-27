@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-uT3K5CGOxPgNJdmHhiLk0NdIaaMe3yvVG6SqWIk3P4U='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-UsHwp32RlCljNHZTXVbUZQWk9x9whUtT2D7ovXHWt70='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Feed a page through Gravitas: its journey, a nine-dimension profile, the weakest link, and the one change that would lift it most. Public-safe information only.">
@@ -1288,31 +1288,11 @@ details.panel[open] > summary { margin-bottom: 12px; }
     out.push('', '## Claims to verify', '', ...(r.claims.length ? r.claims.map((c) => `- ${c}`) : ['None detected.']));
     out.push('', '## Action', '', `- Primary action: ${r.action.primary || 'none found'}`, `- Competing actions: ${r.action.distinct}`, `- Vague labels: ${r.action.vague.join(', ') || 'none'}`, `- What happens next: ${r.action.next ? 'explained' : 'not explained'}`);
     if (r.meta) out.push('', '## Structure', '', `- H1 headings: ${r.meta.h1}`, `- Language: ${r.meta.lang || 'not set'}`, `- Title: ${r.meta.title || 'missing'}`, `- Images without alt: ${r.meta.noAlt} of ${r.meta.imgs}`, `- Unlabeled fields: ${r.meta.unlabeled}`, `- Skipped heading levels: ${r.meta.skips}`);
-    if (rewriteResult) out.push('', '## Gravitas rewrite', '', outlineMarkdown(rewriteResult));
     out.push('', '---', `Method: ${PROTOCOL_URL}`, '', 'The check reads signals in the words and structure of a page. It points to likely gaps; it does not prove what a reader will feel or do.');
     return out.join('\n');
   }
 
-  function outlineMarkdown(o) {
-    const out = [];
-    if (o.audience) out.push(`**Audience:** ${o.audience}`);
-    if (o.decision) out.push(`**Decision supported:** ${o.decision}`, '');
-    for (const s of o.sections || []) out.push(`### ${s.stage}: ${s.heading}`, '', s.body, '');
-    if (o.cta) out.push(`**Action:** ${o.cta.label}. ${o.cta.next || ''}`, '');
-    if ((o.claimsToVerify || []).length) { out.push('**Claims to verify before publishing:**', ''); for (const c of o.claimsToVerify) out.push(`- ${c.claim} — ${c.note}`); }
-    return out.join('\n');
-  }
 
-  // ---------- capabilities ----------
-  let sampleFn = null; let downloads = null; let ctl = null;
-  // Hosted capabilities are bridged in only by the private build; the public page has none.
-  const hostCapabilities = typeof window.__gravitasHostUse === 'function';
-  const use = (name) => (hostCapabilities ? Promise.resolve(window.__gravitasHostUse(name)).catch(() => null) : Promise.resolve(null));
-  function rewriteUnavailable() {
-    const rb = $('#rewriteBtn'), sb = $('#stopBtn'); if (rb) rb.hidden = true; if (sb) sb.hidden = true;
-  }
-  use('sample').then((fn) => { sampleFn = fn; if (!fn) rewriteUnavailable(); });
-  use('downloads').then((d) => { downloads = d; if (!d && hostCapabilities) $('#saveReport').hidden = true; });
 
   function findingsText() {
     const r = current;
@@ -1378,71 +1358,13 @@ details.panel[open] > summary { margin-bottom: 12px; }
     ].join('\n');
   }
 
-  function renderOutline(o) {
-    const box = $('#outline'); box.replaceChildren();
-    if (o.audience || o.decision) {
-      const dl = el('dl', 'kv');
-      if (o.audience) dl.append(el('dt', '', 'Audience'), el('dd', '', String(o.audience)));
-      if (o.decision) dl.append(el('dt', '', 'Decision'), el('dd', '', String(o.decision)));
-      box.append(dl);
-    }
-    for (const s of Array.isArray(o.sections) ? o.sections : []) {
-      const sec = el('section');
-      sec.append(el('span', 'stg', String(s.stage || '')), el('h3', '', String(s.heading || '')));
-      const p = el('p'); const body = String(s.body || '');
-      let last = 0;
-      for (const m of body.matchAll(/\[[^\]]+\]/g)) { if (m.index > last) p.append(document.createTextNode(body.slice(last, m.index))); p.append(el('span', 'todo', m[0])); last = m.index + m[0].length; }
-      if (last < body.length) p.append(document.createTextNode(body.slice(last)));
-      sec.append(p); box.append(sec);
-    }
-    if (o.cta && o.cta.label) { const sec = el('section'); sec.append(el('span', 'stg', 'Primary action'), el('h3', '', String(o.cta.label)), el('p', '', String(o.cta.next || ''))); box.append(sec); }
-    if (Array.isArray(o.claimsToVerify) && o.claimsToVerify.length) {
-      const sec = el('section'); sec.append(el('span', 'stg', 'Verify before publishing'));
-      const ul = el('ul', 'verify'); for (const c of o.claimsToVerify) ul.append(el('li', '', `${c.claim || ''} ${c.note ? '— ' + c.note : ''}`)); sec.append(ul); box.append(sec);
-    }
-  }
-
-  const ERR = {
-    rate_limited: 'Drafting is busy for this account right now. Try again in a little while.',
-    session_expired: 'Sign in again, then try once more.',
-    refused: 'This content could not be redrafted. Try a different page.',
-    prompt_too_large: 'The page is too long. Paste a shorter section.',
-    invalid_json: 'The draft came back in an unexpected shape. Try again.',
-    empty_completion: 'No draft came back. Try a shorter page.',
-    upstream_error: 'The connection was interrupted. Try again.'
-  };
-
-  $('#rewriteBtn')?.addEventListener('click', async () => {
-    if (!sampleFn || !current) return;
-    ctl = new AbortController();
-    $('#rewriteBtn').disabled = true; $('#stopBtn').hidden = false;
-    $('#rewriteStatus').textContent = 'Drafting… this usually takes under a minute.';
-    try {
-      const o = await sampleFn.json(buildPrompt(), { signal: ctl.signal });
-      if (!o || !Array.isArray(o.sections)) throw { code: 'invalid_json' };
-      rewriteResult = o; renderOutline(o);
-      $('#rewriteStatus').textContent = 'Draft ready. Bracketed notes mark where proof is still needed.';
-    } catch (e) {
-      const code = e && e.code;
-      if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(code)) { rewriteUnavailable(); $('#rewriteStatus').textContent = 'Drafting here is not available in this view. Copy the prompt into any AI assistant instead.'; }
-      else $('#rewriteStatus').textContent = code === 'cancelled' ? '' : (ERR[code] || ERR.upstream_error);
-    } finally {
-      $('#rewriteBtn').disabled = false; $('#stopBtn').hidden = true;
-    }
-  });
-  $('#stopBtn')?.addEventListener('click', () => ctl && ctl.abort());
 
   $('#saveReport').addEventListener('click', async () => {
     if (!current) return;
     const data = reportMarkdown();
-    if (!downloads) {
-      const a = el('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'text/markdown' })); a.download = 'gravitas-report.md';
-      document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-      $('#reportStatus').textContent = 'Report downloaded.';
-      return;
-    }
-    try { await downloads.save({ filename: 'gravitas-report.md', data }); $('#reportStatus').textContent = 'Report saved.'; }
-    catch (e) { $('#reportStatus').textContent = e && e.code === 'declined' ? '' : 'The report could not be saved here. Use Copy report instead.'; }
+    const a = el('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'text/markdown' })); a.download = 'gravitas-report.md';
+    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    $('#reportStatus').textContent = 'Report downloaded.';
   });
   $('#copyReport').addEventListener('click', async () => {
     if (!current) return;
