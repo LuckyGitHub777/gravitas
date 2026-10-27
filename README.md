@@ -37,10 +37,6 @@ The site includes **Gravitas Check**: paste a page's text or HTML, or drop a fil
 | `index.html` | The site: Gravitas Check plus the method. |
 | `llms.txt` | A pointer for AI assistants that look for one. |
 
-## Updating
-
-Edit `gravitas.md`, keep the rubric in step with the checker in `index.html`, and bump the protocol version at the top. Changes go live on the site within a minute of pushing to `main`.
-
 ## Terms
 
 © 2026 Gravitas Engine. All rights reserved. You may read the method and apply it to your own pages, and use the checker freely. Republishing or reselling the protocol or code requires written permission.
